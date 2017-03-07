@@ -1,6 +1,6 @@
 #include "vct.h"
 
-Vct* vct_new(int _size, int _len, VCT_ERR *_err)
+Vct* vct_new(const size_t _size, const size_t _len, VCT_ERR *_err)
 {
 	VCT_THROW(_size <= 0, VCT_BAD_SIZE, 0);
 	VCT_THROW(_len <= 0, VCT_BAD_SIZE, 0);
@@ -27,7 +27,7 @@ void vct_free(Vct** _vct)
 	*_vct = 0;
 }
 
-Vct* vct_copy(Vct* _src, VCT_ERR *_err)
+Vct* vct_copy(const Vct* _src, VCT_ERR *_err)
 {
 	Vct* ret = malloc(sizeof(*ret));
 	VCT_THROW(!ret, VCT_OUT_OF_MEMORY, 0);
@@ -45,7 +45,7 @@ Vct* vct_copy(Vct* _src, VCT_ERR *_err)
 	return ret;
 }
 
-void* vct_at(Vct* _vct, int _offset, VCT_ERR *_err)
+void* vct_at(const Vct* _vct, int _offset, VCT_ERR *_err)
 {
 	if(_offset < 0) _offset += _vct;
 	VCT_THROW(_offset < 0 || _offset >= _vct->len, VCT_OUT_OF_RANGE, 0);

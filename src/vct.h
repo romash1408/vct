@@ -19,12 +19,12 @@ typedef enum{
 
 typedef struct{
 	char* begin;
-	int size, len, cap;
+	size_t size, len, cap;
 } Vct;
 
-Vct* vct_new(int _size, int _len, VCT_ERR *_err);
+Vct* vct_new(const size_t _size, const size_t _len, VCT_ERR *_err);
 void vct_free(Vct** _vct);
-Vct* vct_copy(Vct* _src, VCT_ERR *_err);
-void* vct_at(Vct* _vct, int _offset, VCT_ERR *_err);
+Vct* vct_copy(const Vct* _src, VCT_ERR *_err);
+void* vct_at(const Vct* _vct, int _offset, VCT_ERR *_err);
 
 #endif
