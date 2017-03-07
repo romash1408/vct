@@ -11,7 +11,9 @@ if($BOOL){ \
 
 typedef enum{
 	VCT_OK: 0,
-	VCT_OUT_OF_MEMORY: 1
+	VCT_OUT_OF_MEMORY,
+	VCT_BAD_SIZE,
+	VCT_BAD_LENGTH
 } VCT_ERR;
 
 typedef struct{
