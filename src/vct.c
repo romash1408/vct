@@ -9,7 +9,7 @@ Vct* vct_create(int _size, int _len, VCT_ERR *_err)
 	Vct* ret = malloc(sizeof(*ret));
 	VCT_THROW(!ret, VCT_OUT_OF_MEMORY, 0);
 	
-	*ret = (Vct){.size = _size, .len = _len, _cap = 3};
+	*ret = (Vct){.size = _size, .len = _len, .cap = 3};
 	while(ret->cap < ret->len)
 	{
 		ret->cap *= 3;

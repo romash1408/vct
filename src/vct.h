@@ -5,12 +5,12 @@
 
 #define VCT_THROW($BOOL, $ERR, $RET) \
 if($BOOL){ \
-	*err = $ERR; \
+	*_err = $ERR; \
 	return $RET; \
 }
 
 typedef enum{
-	VCT_OK: 0,
+	VCT_OK = 0,
 	VCT_OUT_OF_MEMORY,
 	VCT_BAD_SIZE,
 	VCT_BAD_LENGTH
@@ -21,7 +21,7 @@ typedef struct{
 	int size, len, cap;
 } Vct;
 
-Vct* vct_create(int _size, int _len, VctErr *_err);
+Vct* vct_create(int _size, int _len, VCT_ERR *_err);
 void vct_delete(Vct** _vct);
 
 #endif
