@@ -23,5 +23,6 @@ typedef struct{
 
 Vct* vct_new(int _size, int _len, VCT_ERR *_err);
 void vct_free(Vct** _vct);
+Vct* vct_copy(Vct* _src, VCT_ERR *_err);
 
 #endif
