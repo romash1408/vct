@@ -1,6 +1,6 @@
 #include "vct.h"
 
-Vct* vct_create(int _size, int _len, VCT_ERR *_err)
+Vct* vct_new(int _size, int _len, VCT_ERR *_err)
 {
 	
 	VCT_THROW(_size <= 0, VCT_BAD_SIZE, 0);
@@ -16,12 +16,12 @@ Vct* vct_create(int _size, int _len, VCT_ERR *_err)
 	}
 	
 	ret->begin = malloc(ret->cap * ret->size);
-	VCT_THROW(ret->begin, VCT_OUT_OF_MEMORY, 0);
+	VCT_THROW(ret->begin, VCT_OUT_OF_MEMORY; free(ret), 0);
 	
 	return ret;
 }
 
-void vct_delete(Vct** _vct)
+void vct_free(Vct** _vct)
 {
 	free((*_vct)->begin);
 	free(*_vct);

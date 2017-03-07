@@ -21,7 +21,7 @@ typedef struct{
 	int size, len, cap;
 } Vct;
 
-Vct* vct_create(int _size, int _len, VCT_ERR *_err);
-void vct_delete(Vct** _vct);
+Vct* vct_new(int _size, int _len, VCT_ERR *_err);
+void vct_free(Vct** _vct);
 
 #endif
