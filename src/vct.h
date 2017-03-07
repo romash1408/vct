@@ -13,7 +13,8 @@ typedef enum{
 	VCT_OK = 0,
 	VCT_OUT_OF_MEMORY,
 	VCT_BAD_SIZE,
-	VCT_BAD_LENGTH
+	VCT_BAD_LENGTH,
+	VCT_OUT_OF_RANGE,
 } VCT_ERR;
 
 typedef struct{
@@ -24,5 +25,6 @@ typedef struct{
 Vct* vct_new(int _size, int _len, VCT_ERR *_err);
 void vct_free(Vct** _vct);
 Vct* vct_copy(Vct* _src, VCT_ERR *_err);
+void* vct_at(Vct* _vct, int _offset, VCT_ERR *_err);
 
 #endif

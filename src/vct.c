@@ -44,3 +44,10 @@ Vct* vct_copy(Vct* _src, VCT_ERR *_err)
 	
 	return ret;
 }
+
+void* vct_at(Vct* _vct, int _offset, VCT_ERR *_err)
+{
+	if(_offset < 0) _offset += _vct;
+	VCT_THROW(_offset < 0 || _offset >= _vct->len, VCT_OUT_OF_RANGE, 0);
+	return _vct->begin + _offset;
+}
