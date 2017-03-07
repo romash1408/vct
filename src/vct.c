@@ -47,7 +47,7 @@ Vct* vct_copy(const Vct* _src, VCT_ERR *_err)
 
 void* vct_at(const Vct* _vct, int _offset, VCT_ERR *_err)
 {
-	if(_offset < 0) _offset += _vct;
+	if(_offset < 0) _offset += _vct->len;
 	VCT_THROW(_offset < 0 || _offset >= _vct->len, VCT_OUT_OF_RANGE, 0);
 	return _vct->begin + _offset;
 }
