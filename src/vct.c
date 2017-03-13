@@ -63,3 +63,13 @@ size_t vct_length(const Vct* _vct)
 	if(!_vct) return 0;
 	return _vct->len;
 }
+
+
+VctIterator* vct_iterator(const Vct* _vct, const VCT_ITERATOR_TYPE _type, VCT_ERR* _err)
+{
+	
+}
+void* vct_iterate(const VctIterator* _vct)
+{
+	
+}
