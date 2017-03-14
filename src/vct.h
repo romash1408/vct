@@ -49,6 +49,8 @@ void vct_free(Vct* _vct);
 Vct* vct_copy(const Vct* _src, VCT_ERR* _err);
 void* vct_at(const Vct* _vct, int _offset, VCT_ERR* _err);
 size_t vct_length(const Vct* _vct);
+Vct* vct_push_back(Vct* _vct, const char *_elem, VCT_ERR* _err);
+void* vct_pop_back(Vct *_vct);
 
 VctIterator* vct_iterator(const Vct* _vct, const VCT_ITERATOR_TYPE _type, VCT_ERR* _err);
 void* vct_iterate(VctIterator* _it);

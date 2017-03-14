@@ -64,6 +64,31 @@ size_t vct_length(const Vct* _vct)
 	return _vct->len;
 }
 
+Vct* vct_push_back(Vct* _vct, const char *_elem, VCT_ERR* _err)
+{
+	if(_vct->len == _vct->cap)
+	{
+		_vct->cap *= VCT_CAP_ROOT;
+		char* tmp;
+		VCT_THROW(!(tmp = realloc(_vct->begin, _vct->cap * _vct->size)), VCT_OUT_OF_MEMORY, _vct);
+		_vct->begin = tmp;
+	}
+	
+	for(size_t i = 0; i < _vct->size; ++i)
+	{
+		*(_vct->begin + _vct->len * _vct->size + i) = *(_elem + i);
+	}
+	++_vct->len;
+	
+	return _vct;
+}
+
+void* vct_pop_back(Vct *_vct)
+{
+	if(_vct->len == 0) return 0;
+	return (_vct->begin + --_vct->len * _vct->size);
+}
+
 
 VctIterator* vct_iterator(const Vct* _vct, const VCT_ITERATOR_TYPE _type, VCT_ERR* _err)
 {
