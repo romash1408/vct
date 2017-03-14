@@ -42,17 +42,29 @@ int main()
 		return vct_err;
 	}
 	
-	VctIterator *v_i = vct_iterator(v, VCT_ITERATE_UP);
+	VctIterator *v_i = vct_iterator(v, VCT_ITERATE_UP, &vct_err);
+	if(vct_err)
+	{
+		fprintf(stderr, "Vct error code %d when create iterator\n", vct_err);
+		return vct_err;
+	}
+	
 	float *next = 0;
 	int i = 0;
-	while(next = vct_iterate(v_i))
+	while((next = vct_iterate(v_i)))
 	{
 		*next = 1.0 / ++i; 
 	}
 	free(v_i);
 	
-	v_i = vct_iterator(v, VCT_ETARATE_DOWN);
-	while(next = vct_iterate(v_i))
+	v_i = vct_iterator(v, VCT_ITERATE_DOWN, &vct_err);
+	if(vct_err)
+	{
+		fprintf(stderr, "Vct error code %d when create iterator-2\n", vct_err);
+		return vct_err;
+	}
+	
+	while((next = vct_iterate(v_i)))
 	{
 		printf("%.3f ", *next);
 	}

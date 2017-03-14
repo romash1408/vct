@@ -51,6 +51,6 @@ void* vct_at(const Vct* _vct, int _offset, VCT_ERR* _err);
 size_t vct_length(const Vct* _vct);
 
 VctIterator* vct_iterator(const Vct* _vct, const VCT_ITERATOR_TYPE _type, VCT_ERR* _err);
-void* vct_iterate(const VctIterator* _it);
+void* vct_iterate(VctIterator* _it);
 
 #endif

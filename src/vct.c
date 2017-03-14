@@ -67,9 +67,39 @@ size_t vct_length(const Vct* _vct)
 
 VctIterator* vct_iterator(const Vct* _vct, const VCT_ITERATOR_TYPE _type, VCT_ERR* _err)
 {
-	
+	VctIterator* ret = malloc(sizeof(*ret));
+	VCT_THROW(!ret, VCT_OUT_OF_MEMORY, 0);
+	ret->vct = _vct;
+	ret->ended = (_vct->len == 0);
+	switch(ret->direction = _type)
+	{
+	case VCT_ITERATE_UP:
+		ret->offset = 0;
+		break;
+	case VCT_ITERATE_DOWN:
+		ret->offset = _vct->len - 1;
+		break;
+	}
+	*_err = VCT_OK;
+	return ret;
 }
-void* vct_iterate(const VctIterator* _vct)
+
+void* vct_iterate(VctIterator* _it)
 {
-	
+	if(_it->ended) return 0;
+	void* ret = _it->vct->begin + _it->offset * _it->vct->size;
+	switch(_it->direction)
+	{
+	case VCT_ITERATE_UP:
+		if(++(_it->offset) >= _it->vct->len)
+			_it->ended = 1;
+		break;
+	case VCT_ITERATE_DOWN:
+		if(_it->offset == 0)
+			_it->ended = 1;
+		else
+			--_it->offset;
+		break;
+	}
+	return ret;
 }
