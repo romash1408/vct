@@ -22,7 +22,10 @@ Vct* vct_new(const size_t _len, const size_t _size, VCT_ERR *_err)
 
 void vct_free(Vct* _vct)
 {
-	if(!_vct) return;
+	if(!_vct)
+	{
+		return;
+	}
 	
 	if(_vct->begin) 
 	{
@@ -52,7 +55,10 @@ Vct* vct_copy(const Vct* _src, VCT_ERR *_err)
 
 void* vct_at(const Vct* _vct, int _offset, VCT_ERR *_err)
 {
-	if(_offset < 0) _offset += _vct->len;
+	if(_offset < 0)
+	{
+		_offset += _vct->len;
+	}
 	VCT_THROW(_offset < 0 || _offset >= _vct->len, VCT_OUT_OF_RANGE, 0);
 	*_err = VCT_OK;
 	return _vct->begin + _offset * _vct->size;
@@ -60,32 +66,52 @@ void* vct_at(const Vct* _vct, int _offset, VCT_ERR *_err)
 
 size_t vct_length(const Vct* _vct)
 {
-	if(!_vct) return 0;
+	if(!_vct)
+	{
+		return 0;
+	}
 	return _vct->len;
+}
+
+Vct* vct_resize(Vct* _vct, const size_t _len, VCT_ERR* _err)
+{
+	if(_vct->len == _len)
+	{
+		return _vct;
+	}
+	
+	size_t cap = _vct->cap;
+	while(cap < _len) cap *= VCT_CAP_ROOT;
+	char* tmp = realloc(_vct->begin, cap * _vct->size);
+	VCT_THROW(!tmp, VCT_OUT_OF_MEMORY, _vct);
+	_vct->cap = cap;
+	_vct->begin = tmp;
+	
+	return _vct;
 }
 
 Vct* vct_push_back(Vct* _vct, const char *_elem, VCT_ERR* _err)
 {
-	if(_vct->len == _vct->cap)
+	vct_resize(_vct, _vct->len + 1, _err);
+	if(*_err)
 	{
-		_vct->cap *= VCT_CAP_ROOT;
-		char* tmp;
-		VCT_THROW(!(tmp = realloc(_vct->begin, _vct->cap * _vct->size)), VCT_OUT_OF_MEMORY, _vct);
-		_vct->begin = tmp;
+		return _vct;
 	}
 	
 	for(size_t i = 0; i < _vct->size; ++i)
 	{
-		*(_vct->begin + _vct->len * _vct->size + i) = *(_elem + i);
+		*(_vct->begin + (_vct->len - 1) * _vct->size + i) = *(_elem + i);
 	}
-	++_vct->len;
 	
 	return _vct;
 }
 
 void* vct_pop_back(Vct *_vct)
 {
-	if(_vct->len == 0) return 0;
+	if(_vct->len == 0)
+	{
+		return 0;
+	}
 	return (_vct->begin + --_vct->len * _vct->size);
 }
 
@@ -111,19 +137,28 @@ VctIterator* vct_iterator(const Vct* _vct, const VCT_ITERATOR_TYPE _type, VCT_ER
 
 void* vct_iterate(VctIterator* _it)
 {
-	if(_it->ended) return 0;
+	if(_it->ended)
+	{
+		return 0;
+	}
 	void* ret = _it->vct->begin + _it->offset * _it->vct->size;
 	switch(_it->direction)
 	{
 	case VCT_ITERATE_UP:
 		if(++(_it->offset) >= _it->vct->len)
+		{
 			_it->ended = 1;
+		}
 		break;
 	case VCT_ITERATE_DOWN:
 		if(_it->offset == 0)
+		{
 			_it->ended = 1;
+		}
 		else
+		{
 			--_it->offset;
+		}
 		break;
 	}
 	return ret;
