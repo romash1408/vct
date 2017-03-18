@@ -73,6 +73,20 @@ size_t vct_length(const Vct* _vct)
 	return _vct->len;
 }
 
+static Vct* vct_shrink_to_fit(Vct* _vct, VCT_ERR* _err)
+{
+	size_t cap = _vct->cap;
+	while(cap >= VCT_CAP_ROOT * _vct->len)
+	{
+		cap /= VCT_CAP_ROOT;
+	}
+	char* tmp = realloc(_vct->begin, cap * _vct->size);
+	VCT_THROW(!tmp, VCT_OUT_OF_MEMORY, _vct);
+	_vct->begin = tmp;
+	_vct->cap = cap;
+	return _vct;
+}
+
 Vct* vct_resize(Vct* _vct, const size_t _len, VCT_ERR* _err)
 {
 	if(_vct->len == _len)
