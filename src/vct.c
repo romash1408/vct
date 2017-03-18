@@ -78,7 +78,7 @@ static unsigned char vct_realloc(Vct* _vct, const size_t _cap, VCT_ERR* _err)
 	char* tmp = realloc(_vct, _cap * _vct->size);
 	VCT_THROW(!tmp, VCT_OUT_OF_MEMORY, 1);
 	_vct->begin = tmp;
-	_vct->cap = cap;
+	_vct->cap = _cap;
 	return 0;
 }
 
@@ -118,12 +118,13 @@ Vct* vct_resize(Vct* _vct, const size_t _len, VCT_ERR* _err)
 		return _vct;
 	}
 	
-	size_t cap = _vct->cap;
-	while(cap < _len) cap *= VCT_CAP_ROOT;
-	char* tmp = realloc(_vct->begin, cap * _vct->size);
-	VCT_THROW(!tmp, VCT_OUT_OF_MEMORY, _vct);
-	_vct->cap = cap;
-	_vct->begin = tmp;
+	VCT_THROW(vct_reserve(_vct, _len, _err), *_err, _vct);
+	
+	for(size_t i = _vct->len * _vct->size; i < _len * _vct->size; ++i)
+	{
+		_vct->begin[i] = 0;
+	}
+	_vct->len = _len;
 	
 	return _vct;
 }
