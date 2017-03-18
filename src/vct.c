@@ -73,18 +73,42 @@ size_t vct_length(const Vct* _vct)
 	return _vct->len;
 }
 
-static Vct* vct_shrink_to_fit(Vct* _vct, VCT_ERR* _err)
+static unsigned char vct_realloc(Vct* _vct, const size_t _cap, VCT_ERR* _err)
+{
+	char* tmp = realloc(_vct, _cap * _vct->size);
+	VCT_THROW(!tmp, VCT_OUT_OF_MEMORY, 1);
+	_vct->begin = tmp;
+	_vct->cap = cap;
+	return 0;
+}
+
+static unsigned char vct_shrink_to_fit(Vct* _vct, VCT_ERR* _err)
 {
 	size_t cap = _vct->cap;
 	while(cap >= VCT_CAP_ROOT * _vct->len)
 	{
 		cap /= VCT_CAP_ROOT;
 	}
-	char* tmp = realloc(_vct->begin, cap * _vct->size);
-	VCT_THROW(!tmp, VCT_OUT_OF_MEMORY, _vct);
-	_vct->begin = tmp;
-	_vct->cap = cap;
-	return _vct;
+	if(cap == _vct->cap)
+	{
+		return 0;
+	}
+	return vct_realloc(_vct, cap, _err);
+}
+
+static unsigned char vct_reserve(Vct* _vct, const size_t _cap, VCT_ERR* _err)
+{
+	if(_cap <= _vct->cap)
+	{
+		return 0;
+	}
+	
+	size_t cap = _vct->cap;
+	while(cap < _cap)
+	{
+		cap *= VCT_CAP_ROOT;
+	}
+	return vct_realloc(_vct, cap, _err);
 }
 
 Vct* vct_resize(Vct* _vct, const size_t _len, VCT_ERR* _err)
