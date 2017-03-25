@@ -79,11 +79,24 @@ int main()
 	}
 	free(v_i);
 	
-	while((next = vct_pop_back(v)))
+	next = malloc(sizeof(*next));
+	while(vct_length(v))
 	{
+		vct_pop_back(v, (char*)next, &vct_err);
+		VCT_ERR_VERIFY(vct_err);
 		printf("%.3f ", *next);
 	}
-	printf("TEST3 OK!\n");
 	
+	*next = 1.0f/3.0f;
+	vct_push_back(v, (const char*)next, &vct_err);
+	VCT_ERR_VERIFY(vct_err);
+	*next = 0;
+	
+	vct_pop_back(v, (char*)next, &vct_err);
+	VCT_ERR_VERIFY(vct_err);
+	printf("\n%.3f\n", *next);
+	free(next);
+	vct_free(v);
+	printf("TEST3 OK!\n");
 	return 0;
 }
