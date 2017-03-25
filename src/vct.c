@@ -75,10 +75,11 @@ size_t vct_length(const Vct* _vct)
 
 static unsigned char vct_realloc(Vct* _vct, const size_t _cap, VCT_ERR* _err)
 {
-	char* tmp = realloc(_vct, _cap * _vct->size);
+	char* tmp = realloc(_vct->begin, _cap * _vct->size);
 	VCT_THROW(!tmp, VCT_OUT_OF_MEMORY, 1);
 	_vct->begin = tmp;
 	_vct->cap = _cap;
+	*_err = VCT_OK;
 	return 0;
 }
 
@@ -126,6 +127,8 @@ Vct* vct_resize(Vct* _vct, const size_t _len, VCT_ERR* _err)
 	}
 	_vct->len = _len;
 	
+	VCT_THROW(vct_shrink_to_fit(_vct, _err), *_err, _vct);
+	
 	return _vct;
 }
 
@@ -142,6 +145,7 @@ Vct* vct_push_back(Vct* _vct, const char *_elem, VCT_ERR* _err)
 		*(_vct->begin + (_vct->len - 1) * _vct->size + i) = *(_elem + i);
 	}
 	
+	*_err = VCT_OK;
 	return _vct;
 }
 
@@ -153,6 +157,7 @@ void vct_pop_back(Vct *_vct, char *_elem, VCT_ERR* _err)
 		{
 			_elem[i] = 0;
 		}
+		*_err = VCT_OK;
 		return;
 	}
 	_vct->len -= 1;
@@ -160,6 +165,7 @@ void vct_pop_back(Vct *_vct, char *_elem, VCT_ERR* _err)
 	{
 		_elem[i] = _vct->begin[_vct->len * _vct->size + i];
 	}
+	*_err = VCT_OK;
 }
 
 
