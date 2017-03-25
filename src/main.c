@@ -90,13 +90,18 @@ int main()
 	*next = 1.0f/3.0f;
 	vct_push_back(v, (const char*)next, &vct_err);
 	VCT_ERR_VERIFY(vct_err);
-	*next = 0;
-	
-	vct_pop_back(v, (char*)next, &vct_err);
-	VCT_ERR_VERIFY(vct_err);
-	printf("\n%.3f\n", *next);
 	free(next);
+	
+	printf("\n");
+	vct_resize(v, 3, &vct_err);
+	VCT_ERR_VERIFY(vct_err);
+	for(size_t i = 0; i < vct_length(v); ++i)
+	{
+		next = VCT_AT(v, i, float, &vct_err);
+		VCT_ERR_VERIFY(vct_err);
+		printf("%.3f ", *next);
+	}
 	vct_free(v);
-	printf("TEST3 OK!\n");
+	printf("\nTEST3 OK!\n");
 	return 0;
 }
