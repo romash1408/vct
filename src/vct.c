@@ -145,13 +145,21 @@ Vct* vct_push_back(Vct* _vct, const char *_elem, VCT_ERR* _err)
 	return _vct;
 }
 
-void* vct_pop_back(Vct *_vct)
+void vct_pop_back(Vct *_vct, char *_elem, VCT_ERR* _err)
 {
 	if(_vct->len == 0)
 	{
-		return 0;
+		for(size_t i = 0; i < _vct->size; ++i)
+		{
+			_elem[i] = 0;
+		}
+		return;
 	}
-	return (_vct->begin + --_vct->len * _vct->size);
+	_vct->len -= 1;
+	for(size_t i = 0; i < _vct->size; ++i)
+	{
+		_elem[i] = _vct->begin[_vct->len * _vct->size + i];
+	}
 }
 
 
